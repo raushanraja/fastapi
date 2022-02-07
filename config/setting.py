@@ -10,7 +10,7 @@ class Settings(BaseSettings):
     POSTUSER: str = "raushan"
     POSTPASSWORD: str = "meraushan"
     POSTHOST: str = "localhost"
-    POSTPATH: str = ""
+    POSTPATH: str = "fasttest"
     POSTPORT: str = "5432"
 
 

@@ -27,16 +27,24 @@ class CRUDBase(Generic[ModelType, CreateSchemaType, UpdateSchemaType]):
     def get(self, db: Session, id: str) -> Optional[ModelType]:
         return db.query(self.model).filter(self.model.id == id).one_or_none()
 
-    def get_by_filter(self, db: Session, filters: dict, limit: int = None) -> Optional[ModelType]:
-        if limit:
-            return db.query(self.model).filter_by(**filters).limit(limit).all()
+    def get_by_filter(self, db: Session, filters: dict = None, limit: int = None) -> Optional[ModelType]:
+        if filters:
+            if limit:
+                return db.query(self.model).filter_by(**filters).limit(limit).all()
+            else:
+                return db.query(self.model).filter_by(**filters).all()
         else:
-            return db.query(self.model).filter_by(**filters).all()
+            if limit:
+                return db.query(self.model).limit(limit).all()
+            else:
+                return db.query(self.model).all()
+
 
     def create(self, db: Session, obj_in: CreateSchemaType) -> Optional[ModelType]:
         obj_in = jsonable_encoder(obj_in)
         db_obj = self.model(**obj_in)
         db.add(db_obj)
+        db.commit()
         db.refresh(db_obj)
         return db_obj
 
