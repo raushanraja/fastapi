@@ -39,7 +39,6 @@ class CRUDBase(Generic[ModelType, CreateSchemaType, UpdateSchemaType]):
             else:
                 return db.query(self.model).all()
 
-
     def create(self, db: Session, obj_in: CreateSchemaType) -> Optional[ModelType]:
         obj_in = jsonable_encoder(obj_in)
         db_obj = self.model(**obj_in)
@@ -59,9 +58,8 @@ class CRUDBase(Generic[ModelType, CreateSchemaType, UpdateSchemaType]):
         db.refresh(db_obj)
         return db_obj
 
-    def test_multiple_filter(self, db: Session, filter_one:dict = None, filter_two:dict = None, filter_three:dict = None) -> Optional[ModelType]:
+    def test_multiple_filter(self, db: Session, filter_one: dict = None, filter_two: dict = None, filter_three: dict = None) -> Optional[ModelType]:
         return db.query(self.model).filter_by(**filter_one).filter_by(**filter_two).filter_by(**filter_three).all()
-
 
     def remove(self, db: Session, id: str):
         db_obj = self.get(db, id)
