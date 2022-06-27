@@ -5,6 +5,7 @@ from sqlalchemy.orm import Session
 from pydantic import BaseModel
 from crud.base_class import Base
 from fastapi.encoders import jsonable_encoder
+from sq.posts import Post
 
 ModelType = TypeVar("ModelType", bound=Base)
 SchemaType = TypeVar("SchemaType", bound=BaseModel)
@@ -39,8 +40,12 @@ class CRUDBase(Generic[ModelType, CreateSchemaType, UpdateSchemaType]):
             else:
                 return db.query(self.model).all()
 
-    def create(self, db: Session, obj_in: CreateSchemaType) -> Optional[ModelType]:
-        obj_in = jsonable_encoder(obj_in)
+    def create(self, db: Session, obj_in: Union[CreateSchemaType, Dict]):
+        if isinstance(obj_in, dict):
+            post = obj_in.get('post')
+
+            if post is not None and  isinstance(post, dict):
+                obj_in['post'] = Post(**post)
         db_obj = self.model(**obj_in)
         db.add(db_obj)
         db.commit()

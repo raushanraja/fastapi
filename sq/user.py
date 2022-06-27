@@ -2,8 +2,9 @@ from datetime import datetime
 from uuid import uuid4
 
 from crud.base_class import Base
-from sqlalchemy import Boolean, Column, String, DateTime
+from sqlalchemy import Boolean, Column, DateTime, String
 from sqlalchemy.dialects.postgresql import UUID
+from sqlalchemy.orm import relationship, backref
 
 
 class User(Base):
@@ -13,3 +14,5 @@ class User(Base):
     password = Column(String, nullable=False)
     created_at = Column(DateTime, default=datetime.utcnow)
     is_superuser = Column(Boolean, default=False)
+    address = relationship('Address',back_populates='user',uselist=False)
+    post = relationship("Post", backref="user", uselist=False)
