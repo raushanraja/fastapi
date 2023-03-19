@@ -64,7 +64,8 @@ def add_post(user_id: str = None):
 
 def add_user_post_dict():
     post_dict = {'title': 'Hello World', 'content': 'This is my first post'}
-    user_dict = {'name': 'John', 'username': 'John', 'post': post_dict, 'password': 'passowrd'}
+    user_dict = {'name': 'John', 'username': 'John',
+                 'post': post_dict, 'password': 'passowrd'}
     with SessionLocal() as db:
         user_obj = crud_user.create(db=db, obj_in=user_dict)
         print(str(user_obj.__dict__))
@@ -73,8 +74,22 @@ def add_user_post_dict():
         return str(user_obj.id)
 
 
+def add_user_attr():
+    with SessionLocal() as db:
+        user = User(name='John')
+        user.username = 'John'
+        user.password = 'Password'
+        user.post = Post()
+        user.post.title = 'Hello World'
+        user.post.content = 'The post by post for the post.'
+        user = crud_user.create(db=db, obj_in=user)
+        print(user)
+        print(user.object_to_dict(user))
+
+
 def main():
-    add_user_post_dict()
+    add_user_attr()
+    # add_user_post_dict()
     # user_id: str = add_user()
     # add_address(user_id=user_id)
     # add_address(user_id='a6af623b-010a-4464-b764-5dc1e64d2638')

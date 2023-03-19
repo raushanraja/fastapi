@@ -41,12 +41,12 @@ class CRUDBase(Generic[ModelType, CreateSchemaType, UpdateSchemaType]):
                 return db.query(self.model).all()
 
     def create(self, db: Session, obj_in: Union[CreateSchemaType, Dict]):
+        db_obj=obj_in
         if isinstance(obj_in, dict):
             post = obj_in.get('post')
-
             if post is not None and  isinstance(post, dict):
                 obj_in['post'] = Post(**post)
-        db_obj = self.model(**obj_in)
+            db_obj = self.model(**obj_in)
         db.add(db_obj)
         db.commit()
         db.refresh(db_obj)
