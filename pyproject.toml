@@ -1,0 +1,23 @@
+[tool.poetry]
+name = "mongo_fastapi"
+version = "0.1.0"
+description = ""
+authors = ["raushanraja <vraushanraja@gmail.com>"]
+
+[tool.poetry.dependencies]
+python = "^3.10"
+fastapi = "^0.79.0"
+pytest = "^7.1.2"
+uvicorn = {extras = ["standard"], version = "^0.18.2"}
+requests = "^2.28.1"
+Jinja2 = "^3.1.2"
+mongoengine = "^0.27.0"
+mongomock = "^4.1.2"
+
+[tool.poetry.dev-dependencies]
+autopep8 = "^1.6.0"
+ipykernel = "^6.15.1"
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
